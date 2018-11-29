@@ -19,22 +19,23 @@ class Heap:
         if self.is_empty():
             return None
 
-        min_elem = self.heap_array.append[0]
+        min_elem = self.heap_array[0]
 
         # TODO: Complete implementation
 
         # move the last value in the array to the first index
+        last_value = self.heap_array.pop()
         if len(self.heap_array) > 0:
-            last_value = self.heap_array[len(self.heap_array) - 1]
             self.heap_array[0] = last_value
 
-            self.sort_down(0)
+            self.heap_sort_sort_down(0)
 
         return min_elem
 
     def is_empty(self):
         return len(self.heap_array) == 0
 
+    # Used in the insert function to sort the heap after an element has been inserted
     def sort_up(self, node_index):
         # sort the heap starting from the node that passed into the method and traverse through its parents
         while node_index > 0:
@@ -51,7 +52,7 @@ class Heap:
             else:
                 return
 
-    def sort_down(self, node_index):
+    def heap_sort_sort_down(self, node_index):
         child_index = 2 * node_index + 1
         value = self.heap_array[node_index]
 
@@ -67,13 +68,13 @@ class Heap:
 
             if min_value == value:
                 return
-            else:
-                temp = self.heap_array[node_index]
-                self.heap_array[node_index] = self.heap_array[min_index]
-                self.heap_array[min_index] = temp
 
-                node_index = min_index
-                child_index = 2 * node_index + 1
+            temp = self.heap_array[node_index]
+            self.heap_array[node_index] = self.heap_array[min_index]
+            self.heap_array[min_index] = temp
+
+            node_index = min_index
+            child_index = 2 * node_index + 1
 
 
 def create_list_from_file(file):
@@ -95,18 +96,19 @@ def heap_sort(list):
     for elem in list:
         heap.insert(elem)
 
-    for i in range(len(heap.heap_array)):
+    while not heap.is_empty():
         result.append(heap.extract_min())
-        i += 1
 
     return result
 
 
 def main():
     list = create_list_from_file("Test.txt")
+
     result = heap_sort(list)
 
     for i in result:
         print(i)
+
 
 main()
